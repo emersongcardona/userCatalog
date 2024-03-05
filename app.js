@@ -7,8 +7,10 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-var app = express();
+const { PrismaClient } = require('@prisma/client');
 
+var app = express();
+const prisma = new PrismaClient();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -39,3 +41,18 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+
+async function testDatabase() {
+  try {
+    // Realizar una consulta simple para probar la conexión
+    const users = await prisma.user.findMany();
+    console.log('Usuarios en la base de datos:', users);
+  } catch (error) {
+    console.error('Error al probar la conexión con la base de datos:', error);
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+testDatabase();
