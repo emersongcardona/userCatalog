@@ -1,5 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
-const {response, errors, userNotFound} = require('../network/response')
+//const {success, err} = require('../network/response')
+const {validationResult } = require('express-validator')
+
 
 const prisma = new PrismaClient();
 
@@ -26,8 +28,7 @@ const userOne = async (req, res) => {
         const userId = req.params.id;
         const userFound = await prisma.user.findUnique({
             where: {
-                id: parseInt(userId),
-                deleted_at: null
+                id: parseInt(userId)
             }
         });
 
@@ -45,6 +46,9 @@ const userOne = async (req, res) => {
 
 const userCreate  = async (req, res) => {
     try {
+        //this body params are only to confirm and encrypt the password 
+        delete req.body.password
+        delete req.body.confirm_password
         const userData = req.body;
         const userCreated = await prisma.user.create({data: userData});
         res.status(200).json(userCreated);
@@ -56,11 +60,13 @@ const userCreate  = async (req, res) => {
 
 const userUpdate = async (req, res) => {
     try {
+        //this body params are only to confirm and encrypt the password 
+        delete req.body.password
+        delete req.body.confirm_password
         const userData = req.body;
         const userUpdate = await prisma.user.update({
             where:{ 
                 id :parseInt(req.params.id),
-                deleted_at: null
             },
             data: userData
         })
@@ -75,18 +81,17 @@ const userUpdate = async (req, res) => {
 
 const userDelete = async (req, res) => {
     try {
+        console.log("llego al controlador")
         userId = req.params.id
         const userDeleted = await prisma.user.update({
             where: {
                 id: parseInt(userId),
-                deleted_at: null
             },
             data: {deleted_at : new Date()}
         });
 
         res.status(200).json(userDeleted);
 
-        //response(req, res, userDeleted);
     } catch (error) {
         console.error("error deleting user", error);
         res.status(500).json({error: `error, couldnt delete user`}); 

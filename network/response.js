@@ -19,16 +19,7 @@ const err = (req, res, error, status) => {
 };
 
 
-const response = (req, res, user) =>{
-    if (!user) {
-        return res.status(404).json({ error: "User not found" });
-    }
-
-    res.status(200).json(user)
-}
-
 module.exports = {
     success,
     err,
-    response
 };
