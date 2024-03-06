@@ -1,32 +1,18 @@
 var express = require('express');
 var router = express.Router();
+const {userList, userOne, userCreate, userUpdate, userDelete}  = require("../controllers/user.controller");
+const {validatePassword} = require("../middlewares/password.validator")
+ 
 
+router.get('/', userList);
 
-router.get('/', function(req, res) {
-  res.send('respond with a user');
-});
+router.get('/:id', userOne );
 
-router.get('/:id',  (req, res) => {
-  const userId = req.params.id;
-  res.send(`Mostrando artículo con el ID: ${userId}`);
-});
+router.post('/', validatePassword , userCreate);
 
-router.post('/',  (req, res) => {
-  const data = req.body;
-  res.send('Datos recibidos correctamente');
-});
+router.patch('/:id', userUpdate)
 
-router.patch('/', (req,res) =>{
-  const data = req.body;
-  res.send("aqui actualizaremos datos")
-})
-
-router.delete('/:id',  (req, res) => {
-  const userId = req.params.id;
-  res.send(`borraremos el usuario ${userId}`);
-});
-
-
+router.delete('/:id', userDelete);
 
 
 module.exports = router;
