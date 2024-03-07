@@ -1,12 +1,14 @@
 # User Catalog API
 
 This repository contains the backend API for a User Catalog application.
+### Video
+ * A video demonstrating how to use this API can be find at: https://youtu.be/JLEqC8Diqpo
 
 ## Getting Started
 
 Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
 
-### Prerequisites
+### Prerequisites 
 
 Ensure you have the following software installed on your machine:
 
@@ -25,14 +27,14 @@ Ensure you have the following software installed on your machine:
    * username: postgres
    * password: 2076
    * port: 5432
-   ** or update  .env file with your own credentials
+   * or update  .env file with your own credentials
 
 3. Database Migration
     * Before running the server, you need to perform database migration.
-    * run in terminal the command:
+    * run in terminal the command: npx prisma migrate dev
 
 4. Run server
-    * run in terminal the command:  nodemon start or npm start
+    * run in terminal the command: nodemon start or npm start
 
 5. API Documentation
     * test manually and  access the API documentation at: http://localhost:3000/api-docs/ 
