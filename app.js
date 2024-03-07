@@ -4,12 +4,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var outhRouter = require('./routes/auth');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const authRouter = require('./routes/auth');
+const usersRouter = require('./v1/routes/users');
+const swaggerRouter = require('./routes/swagger');
 const {authenticateJWT} = require('./middlewares/authenticateJWT')
+const upsertTestUser = require('./helpers/createTestUser')
 
 var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,8 +25,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/login', outhRouter);
+app.use('/login', authRouter);
 app.use('/api/v1/users', authenticateJWT ,usersRouter);
+app.use( swaggerRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -41,4 +45,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+upsertTestUser();
+
 module.exports = app;
+
+

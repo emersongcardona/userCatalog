@@ -2,16 +2,18 @@ const bcryptjs = require('bcryptjs');
 const {check} = require('express-validator');
 const {validateResult} = require('../helpers/validateHelper')
 const {emailExists} = require('./emailCheck')
+const {trimFields} = require('../helpers/trimFields')
 
 const  validateUserUpdate = [
     //at least one value shoudt be  changed to update the user info.
     check().custom((value, { req }) => {
-        console.log("body en req: ", req.body)
         if (Object.keys(req.body).length === 0) {
             throw new Error('Request body is empty, wont update user');
         }
         return true;
     }),
+
+    trimFields(['name', 'email', 'password', 'confirm_password']),
 
     //avoid boolean values
     check(['name','email','password','confirm_password']).isString().optional(),

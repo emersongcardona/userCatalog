@@ -2,8 +2,11 @@ const bcryptjs = require('bcryptjs');
 const {check} = require('express-validator');
 const {validateResult} = require('../helpers/validateHelper')
 const {emailExists} = require('./emailCheck')
+const {trimFields} = require('../helpers/trimFields')
+
 
 const  validateUserCreate = [
+    trimFields(['name', 'email', 'password', 'confirm_password']),
     check(['name','email','password','confirm_password']).isString().notEmpty(),
     check('email').isEmail().custom(emailExists),
 

@@ -79,8 +79,10 @@ const userUpdate = async (req, res) => {
 
 const userDelete = async (req, res) => {
     try {
-        console.log("llego al controlador")
         userId = req.params.id
+        //not allow to delete test user 
+        if(parseInt(userId) === 1 )return res.status(500).json({error: `error, couldnt delete test master user`}); 
+
         const userDeleted = await prisma.user.update({
             where: {
                 id: parseInt(userId),
